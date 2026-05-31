@@ -1,7 +1,6 @@
 import {themes as prismThemes} from 'prism-react-renderer';
 import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
-import doxygenApiNavbar from './docusaurus-config-navbar-doxygen-helios.json'
 import remarkGithubAdmonitionsToDirectives from "remark-github-admonitions-to-directives";
 
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
@@ -25,13 +24,16 @@ const config: Config = {
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
   organizationName: 'thorstensuckow', // Usually your GitHub org/user name.
-  projectName: 'helios', // Usually your repo name.
+  projectName: 'helios-engine', // Usually your repo name.
 
   onBrokenLinks: 'warn',
 
   markdown: {
-    format: "detect"
+    format: "detect",
+    mermaid: true,
   },
+
+  themes: ['@docusaurus/theme-mermaid'],
 
   // Even if you don't use internationalization, you can use this field to set
   // useful metadata like html lang. For example, if your site is Chinese, you
@@ -49,7 +51,7 @@ const config: Config = {
           beforeDefaultRemarkPlugins: [remarkGithubAdmonitionsToDirectives],
           sidebarPath: './sidebars.ts',
           editUrl:
-            'https://github.com/thorstensuckow/helios/tree/main/website/',
+            'https://github.com/thorstensuckow/helios-engine/tree/main/',
         },
         blog: false, // Disable blog for now
         theme: {
@@ -100,17 +102,19 @@ const config: Config = {
           position: 'left',
           label: 'Documentation',
         },
-        doxygenApiNavbar,
+        {
+          type: 'docSidebar',
+          sidebarId: 'apiSidebar',
+          position: 'left',
+          label: 'API Reference',
+        },
         {
           to: '/docs/status',
           position: 'right',
           label: 'Status',
-          items: [
-            {label: "Changelog", to: '/docs/changelog',  }
-          ]
         },
         {
-          href: 'https://github.com/thorstensuckow/helios',
+          href: 'https://github.com/thorstensuckow/helios-engine',
           className: "header-github-link",
           position: 'right',
         },
@@ -123,16 +127,16 @@ const config: Config = {
           title: 'Documentation',
           items: [
             {
-              label: 'Getting Started',
-              to: '/docs/intro',
+              label: 'Module Overview',
+              to: '/docs/modules',
             },
             {
-              label: 'API Reference',
-              to: '/docs/api/overview',
+              label: 'helios::ecs',
+              to: '/docs/modules/helios-ecs',
             },
             {
-              label: 'Examples',
-              to: '/docs/examples/simple-cube',
+              label: 'helios::engine',
+              to: '/docs/modules/helios-engine',
             },
           ],
         },
@@ -141,11 +145,11 @@ const config: Config = {
           items: [
             {
               label: 'GitHub Discussions',
-              href: 'https://github.com/thorstensuckow/helios/discussions',
+              href: 'https://github.com/thorstensuckow/helios-engine/discussions',
             },
             {
               label: 'Issues',
-              href: 'https://github.com/thorstensuckow/helios/issues',
+              href: 'https://github.com/thorstensuckow/helios-engine/issues',
             },
           ],
         },
@@ -153,12 +157,16 @@ const config: Config = {
           title: 'More',
           items: [
             {
-              label: 'Academic Paper',
+              label: 'Academic Paper: Game Framework',
               href: 'https://www.researchgate.net/publication/397445662_helios_Design_and_prototypical_implementation_of_a_C_game_framework',
             },
             {
+              label: 'Academic Paper: ECS Engine',
+              href: 'https://www.researchgate.net/publication/403758780_helios_Explorative_Entwicklung_einer_ECS-basierten_Game_Engine',
+            },
+            {
               label: 'GitHub',
-              href: 'https://github.com/thorstensuckow/helios',
+              href: 'https://github.com/thorstensuckow/helios-engine',
             },
           ],
         },

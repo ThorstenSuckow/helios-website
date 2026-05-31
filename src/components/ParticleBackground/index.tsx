@@ -10,7 +10,7 @@ interface Particle {
   alpha: number;
 }
 
-export default function ParticleBackground(): JSX.Element {
+export default function ParticleBackground(): React.JSX.Element {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {

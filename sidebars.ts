@@ -1,5 +1,6 @@
 import type {SidebarsConfig} from '@docusaurus/plugin-content-docs';
-import doxygenSidebarItems from './sidebar-category-doxygen-helios.json';
+import fs from 'node:fs';
+import path from 'node:path';
 
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
@@ -13,81 +14,53 @@ import doxygenSidebarItems from './sidebar-category-doxygen-helios.json';
 
  Create as many sidebars as you want.
  */
+type GeneratedSidebarItem = {
+  type?: string;
+  collapsed?: boolean;
+  items?: GeneratedSidebarItem[];
+  [key: string]: unknown;
+};
+
+function collapseGeneratedApiCategories(item: GeneratedSidebarItem): GeneratedSidebarItem {
+  if (item.type === 'category') {
+    item.collapsed = true;
+  }
+
+  item.items?.forEach(collapseGeneratedApiCategories);
+  return item;
+}
+
+const generatedApiSidebars = [
+  'sidebar-category-doxygen-helios-ecs.json',
+  'sidebar-category-doxygen-helios-engine.json',
+  'sidebar-category-doxygen-helios-math.json',
+  'sidebar-category-doxygen-helios-opengl.json',
+  'sidebar-category-doxygen-helios-glfw.json',
+]
+  .map((fileName) => path.join(__dirname, fileName))
+  .filter((filePath) => fs.existsSync(filePath))
+  .map((filePath) => collapseGeneratedApiCategories(JSON.parse(fs.readFileSync(filePath, 'utf8'))));
+
 const sidebars: SidebarsConfig = {
   // Main documentation sidebar
   tutorialSidebar: [
     'intro',
+    'status',
     {
       type: 'category',
-      label: 'Installation',
+      label: 'Modules',
       link: {
         type: 'doc',
-        id: 'getting-started'
+        id: 'modules/overview'
       },
       items: [
-          'prerequisites'
-      ]
-    },
-    {
-      type: 'category',
-      label: 'Core Concepts',
-      items: [
-        'core-concepts/conventions',
-        'core-concepts/scene-graph',
-        'core-concepts/component-system',
-        'core-concepts/gameloop-architecture',
-        'core-concepts/state-management',
-        'core-concepts/gameobject-builder',
-        'core-concepts/command-system',
-        'core-concepts/resource-registry',
-        'core-concepts/event-system',
-        'core-concepts/spawn-system',
-        'core-concepts/object-pooling',
-        'core-concepts/text-rendering',
+        'modules/helios-ecs',
+        'modules/helios-engine',
+        'modules/helios-math',
+        'modules/helios-opengl',
+        'modules/helios-glfw',
       ],
     },
-    {
-      type: 'category',
-      label: 'ECS Architecture',
-      link: {
-        type: 'doc',
-        id: 'core-concepts/ecs/overview'
-      },
-      items: [
-        'core-concepts/ecs/component-structure',
-        'core-concepts/ecs/gameobject',
-        'core-concepts/ecs/entity-manager',
-        'core-concepts/ecs/entity-registry',
-        'core-concepts/ecs/entity-handle',
-        'core-concepts/ecs/view',
-        'core-concepts/ecs/system',
-        'core-concepts/ecs/traits',
-        'core-concepts/ecs/component-ops',
-        'core-concepts/sparse-set',
-        'core-concepts/component-registry',
-        'core-concepts/component-lifecycle',
-      ],
-    },
-    {
-      type: 'category',
-      label: 'Examples',
-      link: {
-        type: 'doc',
-        id: 'examples/overview'
-      },
-      items: [
-        'examples/simple-cube',
-        'examples/gamepad-input',
-        'examples/spaceship-control',
-        'examples/spaceship-shooting',
-        'examples/enemy-spawn',
-        'examples/collision-detection',
-        'examples/render-text-demo',
-        'examples/scoring-demo',
-        'examples/runtime-test',
-      ],
-    },
-    'testing',
     {
       type: 'category',
       label: 'Contributing',
@@ -97,16 +70,13 @@ const sidebars: SidebarsConfig = {
       },
       items: [
         'contributing/guide',
-        'contributing/issue-submission',
-        'contributing/changelog-guide',
-        'contributing/styleguide',
-        'contributing/doxygen-style',
       ],
     },
   ],
-  doxygenSidebar: [
-    doxygenSidebarItems,
-  ]
+  apiSidebar: [
+    'api/overview',
+    ...(generatedApiSidebars as never[]),
+  ],
 };
 
 export default sidebars;

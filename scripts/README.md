@@ -4,199 +4,148 @@ This directory contains build-time scripts for the helios Docusaurus website.
 
 ## Scripts
 
-### `sync-changelog.mjs`
+### `convert-doxygen.mjs`
 
-Synchronizes markdown documentation from the repository root into the website's `docs/` directory.
+Generates module-wise API documentation from the sibling helios repositories.
 
 **Purpose:**
-- Avoids duplicating documentation across repository and website
-- Ensures single source of truth for documentation
-- Automatically adds Docusaurus frontmatter (metadata)
-- Escapes MDX-incompatible characters
+- Runs Doxygen once per module repository (`helios-ecs`, `helios-engine`, `helios-math`, `helios-opengl`, `helios-glfw`)
+- Uses the shared website `Doxyfile` as the common base configuration
+- Writes Doxygen XML to `doxygen/<module>/xml`
+- Converts each module XML tree with `doxygen2docusaurus --id <module>`
+- Emits Docusaurus docs below `docs/api/<module>` and sidebar JSON files in the website root
 
-**What it syncs:**
+**Prerequisites:**
 
-| Source File | Destination | Description |
-|-------------|-------------|-------------|
-| `CHANGELOG.md` | `docs/changelog.md` | Project changelog |
-| `docs/styleguide.md` | `docs/contributing/styleguide.md` | Code style guide |
-| `docs/doxygen-style.md` | `docs/contributing/doxygen-style.md` | Documentation style |
-| `docs/CONTRIBUTING.md` | `docs/contributing/guide.md` | Contributing guide |
-| `docs/CHANGELOG_GUIDE.md` | `docs/contributing/changelog-guide.md` | Changelog maintenance |
-| `docs/testing.md` | `docs/testing.md` | Testing guide (CTest) |
-| `docs/PREREQUISITES.md` | `docs/prerequisites.md` | Build prerequisites |
-| **Core Concepts (Source of Truth)** | | |
-| `docs/core-concepts/conventions.md` | `docs/core-concepts/conventions.md` | LHS, matrix storage, units |
-| `docs/core-concepts/scene-graph.md` | `docs/core-concepts/scene-graph.md` | Scene hierarchy, transforms |
-| `docs/core-concepts/component-system.md` | `docs/core-concepts/component-system.md` | Components, Systems, GameWorld |
-| `docs/core-concepts/gameloop-architecture.md` | `docs/core-concepts/gameloop-architecture.md` | Commands, Events, EventBus |
-| **Examples** | | |
-| `examples/README.md` | `docs/examples/overview.md` | Examples overview |
-| `examples/v0.0.1-alpha/simple_cube_rendering/README.md` | `docs/examples/simple-cube.md` | Cube rendering tutorial |
-| `examples/v0.0.1-alpha/game_controller_input/README.md` | `docs/examples/gamepad-input.md` | Gamepad input tutorial |
-| `examples/v0.0.1-alpha/spaceship_control/README.md` | `docs/examples/spaceship-control.md` | Spaceship control demo |
-| `examples/v0.0.1-alpha/spaceship_shooting/README.md` | `docs/examples/spaceship-shooting.md` | Twin-stick shooting demo |
-| `examples/v0.0.1-alpha/enemy_spawn/README.md` | `docs/examples/enemy-spawn.md` | Enemy spawn demo |
-| `examples/v0.0.1-alpha/collision_detection/README.md` | `docs/examples/collision-detection.md` | Collision detection demo |
-| `examples/v0.0.1-alpha/render_text_demo/README.md` | `docs/examples/render-text-demo.md` | Text rendering demo |
-| `examples/v0.0.1-alpha/scoring_demo/README.md` | `docs/examples/scoring-demo.md` | Scoring system demo |
-| `examples/v0.0.1-alpha/runtime_test/README.md` | `docs/examples/runtime-test.md` | Runtime stress test |
+```bash
+brew install doxygen graphviz
+npm ci
+```
 
 **Usage:**
 
 ```bash
-# Manual sync (from website/ directory)
-node scripts/sync-changelog.mjs
-
-# Automatic sync (runs during npm run build)
+npm run convert-doxygen
 npm run build
 ```
 
-**How it works:**
+The GitHub Actions workflows install `doxygen` and `graphviz` before running `npm run build`.
 
-1. Reads source markdown files from repository
-2. **Rewrites relative links** to match Docusaurus structure
-3. Generates Docusaurus frontmatter (title, description, slug, tags, keywords)
-4. Escapes problematic MDX characters (e.g., `<`, `>` in prose)
-5. Adds sync banner comment (`<!-- Auto-synced from ... -->`)
-6. Writes to website `docs/` directory
+### `sync-changelog.mjs`
 
-**Link Rewriting:**
+Synchronizes module overview pages from the root `README.md` files of the local
+sibling repositories.
 
-The script automatically rewrites relative links from repository structure to website structure:
+Despite its historical filename, this script no longer synchronizes changelogs,
+legacy core-concept pages, or example documentation. The source of truth is the
+root `README.md` of each module repository.
 
-| Repository Link | Website Link | Example |
-|-----------------|--------------|---------|
-| `./README.md` | `/docs` | Docs overview |
-| `../README.md` | `/` | Repository root → homepage |
-| `../../docs/heliosapi.md` | `/docs/api/overview` | API documentation |
-| `../../docs/styleguide.md` | `/docs/contributing/styleguide` | Style guide |
-| `./styleguide.md` | `/docs/contributing/styleguide` | Within docs/ |
-| `./simple_cube_rendering/README.md` | `/docs/examples/simple-cube` | Example tutorial |
+**Generated pages:**
 
-This ensures all internal links work correctly in the Docusaurus environment without manual editing.
+| Source | Destination |
+|--------|-------------|
+| `../helios-ecs/README.md` | `docs/modules/helios-ecs.md` |
+| `../helios-engine/README.md` | `docs/modules/helios-engine.md` |
+| `../helios-math/README.md` | `docs/modules/helios-math.md` |
+| `../helios-opengl/README.md` | `docs/modules/helios-opengl.md` |
+| `../helios-glfw/README.md` | `docs/modules/helios-glfw.md` |
 
-**Frontmatter Example:**
+**Usage:**
 
-```markdown
----
-title: Simple Cube Rendering
-description: "Tutorial: Rendering a 3D cube with helios - shaders, materials, meshes, and render loop."
-slug: /examples/simple-cube
-sidebar_label: Simple Cube
-tags: [examples, rendering, tutorial]
-keywords: [helios, 3D rendering, OpenGL, cube, tutorial]
----
-
-<!-- Auto-synced from repository by scripts/sync-changelog.mjs. Do not edit this file directly. -->
-
-# Simple Cube Rendering Tutorial
-...
+```bash
+npm run sync:docs
 ```
 
-**MDX Escaping:**
+The script adds Docusaurus frontmatter, escapes MDX-incompatible prose, preserves
+code blocks, and rewrites relative markdown links. Links that resolve to another
+local synced module page are rewritten to local Docusaurus routes. Other relative
+markdown links fall back to the corresponding GitHub repository URL.
 
-The script automatically escapes characters that conflict with MDX/JSX:
-- `<=` → `&lt;=`
-- `>=` → `&gt;=`
-- Isolated `<` and `>` surrounded by spaces
+## Build integration
 
-Code blocks are preserved without escaping.
-
-**YAML Escaping:**
-
-Frontmatter values containing special characters (`:`, `"`, etc.) are automatically quoted:
-```yaml
-description: "How to maintain the helios CHANGELOG: categories, release workflow"
-# Colon in value requires quotes
+```bash
+npm run dev
+npm run build
+npm run serve
 ```
 
-## Adding New Synced Documents
+- `npm run dev` synchronizes module READMEs and starts Docusaurus.
+- `npm run build` synchronizes module READMEs, regenerates module-wise API docs,
+  and builds the static website.
+- `npm run serve` synchronizes module READMEs, regenerates module-wise API docs,
+  and serves the static build.
 
-To add a new document to sync:
+## Generated files
 
-1. Open `scripts/sync-changelog.mjs`
-2. Add a new entry to the `syncMappings` array:
+The generated documentation is intentionally ignored by Git:
 
-```javascript
-{
-  src: path.join(repoRoot, 'path/to/source.md'),
-  dest: path.join(websiteRoot, 'docs', 'destination.md'),
-  meta: {
-    title: 'Document Title',
-    description: 'Brief description for SEO',
-    slug: '/destination',
-    sidebar_label: 'Sidebar Label',
-    tags: ['tag1', 'tag2'],
-    keywords: ['keyword1', 'keyword2']
-  }
-}
-```
+- `doxygen/`
+- `docs/api/helios-*/`
+- `sidebar-category-doxygen-helios-*.json`
+- `docusaurus-config-navbar-doxygen-helios-*.json`
+- `static/img/doxygen/`
 
-3. Update `sidebars.ts` if needed
-4. Run `node scripts/sync-changelog.mjs` to test
-5. Commit both the script and resulting synced files
+Regenerate these files locally or in CI instead of editing them manually.
 
-## CI/CD Integration
+## CI/CD integration
 
-The sync script is automatically run during:
-- **Local builds:** `npm run build` (via `package.json` build script)
-- **GitHub Actions:** Website deployment workflow (`.github/workflows/deploy-docs.yml`)
+The GitHub Actions workflows check out `helios-website` and all module
+repositories as siblings, install Node dependencies, install Doxygen/Graphviz,
+and run `npm run build`.
 
 ## Troubleshooting
 
-### Sync script fails with "Module not found"
+### `doxygen` or `dot` not found
 
-Ensure you're running from the `website/` directory:
+Install Doxygen and Graphviz locally:
+
 ```bash
-cd website
-node scripts/sync-changelog.mjs
+brew install doxygen graphviz
 ```
 
-### Frontmatter parsing error
+Then verify:
 
-Check for unescaped special characters in metadata values. The script should auto-escape, but if issues persist:
-- Manually quote the value in `meta` object
-- Check for stray `---` in source markdown
+```bash
+doxygen --version
+dot -V
+```
 
-### Links broken after sync
+### Missing module source directory
 
-If Docusaurus shows warnings about unresolved links:
+Ensure the module repositories are checked out next to `helios-website`, not
+inside it.
 
-1. **Check if link is in the rewrite map:** Open `sync-changelog.mjs` and find the `rewriteLinks()` function
-2. **Add missing mapping:**
-   ```javascript
-   const linkMap = {
-     './your-file.md': '/docs/destination',
-     // ... existing mappings
-   };
-   ```
-3. **Run sync again:** `node scripts/sync-changelog.mjs`
-4. **Verify in synced file:** Check that the link was rewritten correctly
+### Doxygen2Docusaurus emits unsupported C++20/23 warnings
 
-**Common patterns:**
-- `./file.md` → `/docs/section/file`
-- `../file.md` → `/docs/file`
-- `../../README.md` → `/` (homepage)
+`@xpack/doxygen2docusaurus` may log unsupported XML elements such as
+`requiresclause` or `conceptparts` for modern C++ constructs. These messages are
+converter limitations. They do not necessarily indicate a failed conversion if
+the command exits successfully and the Docusaurus build passes.
 
-**External links** (starting with `http://` or `https://`) are not modified.
+### Broken generated API links
 
-### MDX compilation errors
+Regenerate from a clean state:
 
-If MDX complains about `<` or `>`:
-- Check if the character is in a code block (should be preserved)
-- Verify the escaping logic in `escapeMDXCharacters()`
-- Manually escape in source if needed: `&lt;`, `&gt;`
+```bash
+rm -rf doxygen docs/api/helios-* sidebar-category-doxygen-helios-*.json static/img/doxygen
+npm run convert-doxygen
+npm run build
+```
 
 ## Maintenance
 
-When updating the script:
-1. Test locally before committing
-2. Verify all synced docs build successfully (`npm run build`)
-3. Check that links and formatting are preserved
-4. Update this README if behavior changes
+When changing these scripts:
 
----
+1. Keep source-of-truth documentation in the module repository READMEs.
+2. Keep generated website files ignored unless there is a deliberate decision to
+   commit generated API snapshots.
+3. Validate the script syntax.
+4. Run the conversion and the website build.
 
-For questions, see [Website Documentation](../README.md) or [Contributing Guide](../../docs/CONTRIBUTING.md).
+```bash
+node --check scripts/convert-doxygen.mjs
+node --check scripts/sync-changelog.mjs
+npm run convert-doxygen
+npm run build
+```
 

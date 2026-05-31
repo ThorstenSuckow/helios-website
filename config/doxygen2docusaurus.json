@@ -1,0 +1,57 @@
+{
+  "helios-ecs": {
+    "doxygenXmlInputFolderPath": "doxygen/helios-ecs/xml",
+    "docsFolderPath": "docs",
+    "apiFolderPath": "api/helios-ecs",
+    "apiBaseUrl": "api/helios-ecs",
+    "imagesFolderPath": "img/doxygen/helios-ecs",
+    "sidebarCategoryFilePath": "sidebar-category-doxygen-helios-ecs.json",
+    "sidebarCategoryLabel": "helios::ecs API",
+    "navbarFilePath": "",
+    "mainPageTitle": "helios::ecs API Reference"
+  },
+  "helios-engine": {
+    "doxygenXmlInputFolderPath": "doxygen/helios-engine/xml",
+    "docsFolderPath": "docs",
+    "apiFolderPath": "api/helios-engine",
+    "apiBaseUrl": "api/helios-engine",
+    "imagesFolderPath": "img/doxygen/helios-engine",
+    "sidebarCategoryFilePath": "sidebar-category-doxygen-helios-engine.json",
+    "sidebarCategoryLabel": "helios::engine API",
+    "navbarFilePath": "",
+    "mainPageTitle": "helios::engine API Reference"
+  },
+  "helios-math": {
+    "doxygenXmlInputFolderPath": "doxygen/helios-math/xml",
+    "docsFolderPath": "docs",
+    "apiFolderPath": "api/helios-math",
+    "apiBaseUrl": "api/helios-math",
+    "imagesFolderPath": "img/doxygen/helios-math",
+    "sidebarCategoryFilePath": "sidebar-category-doxygen-helios-math.json",
+    "sidebarCategoryLabel": "helios::math API",
+    "navbarFilePath": "",
+    "mainPageTitle": "helios::math API Reference"
+  },
+  "helios-opengl": {
+    "doxygenXmlInputFolderPath": "doxygen/helios-opengl/xml",
+    "docsFolderPath": "docs",
+    "apiFolderPath": "api/helios-opengl",
+    "apiBaseUrl": "api/helios-opengl",
+    "imagesFolderPath": "img/doxygen/helios-opengl",
+    "sidebarCategoryFilePath": "sidebar-category-doxygen-helios-opengl.json",
+    "sidebarCategoryLabel": "helios::opengl API",
+    "navbarFilePath": "",
+    "mainPageTitle": "helios::opengl API Reference"
+  },
+  "helios-glfw": {
+    "doxygenXmlInputFolderPath": "doxygen/helios-glfw/xml",
+    "docsFolderPath": "docs",
+    "apiFolderPath": "api/helios-glfw",
+    "apiBaseUrl": "api/helios-glfw",
+    "imagesFolderPath": "img/doxygen/helios-glfw",
+    "sidebarCategoryFilePath": "sidebar-category-doxygen-helios-glfw.json",
+    "sidebarCategoryLabel": "helios::glfw API",
+    "navbarFilePath": "",
+    "mainPageTitle": "helios::glfw API Reference"
+  }
+}

@@ -4,84 +4,89 @@ sidebar_position: 1
 
 # Welcome to helios
 
-**helios** is a custom game framework built from first principles, written in modern C++23.
+**helios** is a modular C++23 game framework ecosystem built from first principles.
 
 ## What is helios?
 
-helios is an educational project designed to explore the intricacies of game engine architecture. Each component is built from first principles with a focus on:
+helios is an educational and experimental engine architecture project organized
+as focused modules with clear responsibilities and explicit dependencies.
 
-- **Modern C++23** module-based architecture
-- **Clean dependency management** with fast compilation times
-- **Flexible rendering pipeline** with OpenGL backend
-- **Component-based design** for maintainability
+The current documentation is organized around these repositories:
+
+- **[helios::ecs](/docs/modules/helios-ecs)** - Generic ECS primitives and typed entity domains
+- **[helios::engine](/docs/modules/helios-engine)** - Runtime, world orchestration, rendering abstractions, state, and platform contracts
+- **[helios::math](/docs/modules/helios-math)** - Vector, matrix, transform, and projection helpers
+- **[helios::opengl](/docs/modules/helios-opengl)** - OpenGL backend integration
+- **[helios::glfw](/docs/modules/helios-glfw)** - GLFW platform/window integration
 
 ## Quick Start
 
-Get started with helios in just a few steps:
+Start with the module overview and then open the repository README for the module
+you want to use or build.
 
 ```bash
-# Clone the repository
-git clone https://github.com/thorstensuckow/helios.git
-cd helios
+# Main engine/runtime repository
+git clone https://github.com/thorstensuckow/helios-engine.git
+cd helios-engine
 
-# Configure with CMake
 cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+cmake --build build
+```
 
-# Build
-cmake --build build --config Release
+For local multi-repository development, place the module repositories next to each
+other in the same parent directory:
 
-# Run an example
-cd build/examples/simple_cube_rendering/Release
-./simple_cube_rendering
+```text
+workspace/
+  helios-engine/
+  helios-ecs/
+  helios-math/
+  helios-opengl/
+  helios-glfw/
+  helios-website/
 ```
 
 ## Features
 
--  **Modern C++23**: Module-based architecture with clean dependency management
--  **Scene Graph**: Hierarchical scene management with transform propagation
--  **Rendering Pipeline**: Flexible render passes with batching support
--  **Input System**: Unified input handling for keyboard, mouse, and gamepad
--  **Math Library**: Vector, matrix, and transform operations for 3D graphics
--  **OpenGL Backend**: Initial rendering implementation using OpenGL 4.5+
--  **Cross-Platform**: Windows, Linux, and macOS support
--  **Extensible**: Plugin architecture for different rendering backends
+- **Modern C++23**: Module-based architecture with explicit package boundaries
+- **Reusable ECS**: Domain-safe typed handles, sparse-set storage, and typed views
+- **Math Library**: Vector, matrix, transform, and projection operations
+- **Runtime Architecture**: Game loop, command buffers, event buses, state management, and resource registries
+- **Rendering Integration**: Engine rendering abstractions with OpenGL backend support
+- **Platform Integration**: GLFW-backed window and platform lifecycle handling
+- **Documentation from READMEs**: Module pages are generated from each repository's root `README.md`
 
 ## Learning Path
 
-:::tip Code Examples
-Code snippets in this documentation are often simplified to focus on specific concepts. For complete, compilable examples including all necessary setup (shaders, materials, meshes), please refer to the **[examples/](https://github.com/thorstensuckow/helios/tree/main/examples)** directory in the repository.
-:::
-
-1. **[Getting Started](./getting-started)** - Set up your development environment
-2. **[Your First Application](./examples/simple-cube)** - Create a rotating cube
-3. **[Core Concepts](./core-concepts/scene-graph)** - Understand helios architecture
-4. **[API Reference](./api/overview)** - Detailed API documentation
+1. **[Module Overview](/docs/modules)** - Understand the repository split and dependency graph
+2. **[Getting Started](./getting-started)** - Clone/build the current module repositories
+3. **[helios::ecs](/docs/modules/helios-ecs)** - Learn the typed-domain ECS foundation
+4. **[helios::engine](/docs/modules/helios-engine)** - Explore the runtime and engine integration layer
 
 ## Project Philosophy
 
-The development process emphasizes understanding both the mathematical foundations and the rationale behind established patterns, such as trade-offs between indirect and direct data storage or the division of labor between CPU-side culling and GPU-side clipping.
+helios focuses on understanding engine architecture by building core systems from
+first principles: typed entity identity, data-oriented component storage,
+module-based dependency boundaries, explicit rendering abstractions, and
+runtime orchestration through commands, events, and managers.
 
 ## Contributing
 
-We welcome contributions to helios - before you get started, please review:
+Contributions and feedback should target the relevant module repository. For
+cross-module or engine-level topics, use the engine repository:
 
-- **[Contributing Guide](/docs/contributing/guide)** - Complete guide for the contribution process, commit conventions, and pull requests
-- **[Issue Submission Guide](/docs/contributing/issue-submission)** - Guidelines for submitting bug reports, feature requests, and refactoring proposals
-- **[Code Style Guide](/docs/contributing/styleguide)** - C++ coding conventions and formatting standards
+- [helios-engine issues](https://github.com/thorstensuckow/helios-engine/issues)
+- [helios-engine discussions](https://github.com/thorstensuckow/helios-engine/discussions)
 
 ## Academic Context
 
-This project originated as a semester project for a computer science degree. The design principles, architecture, and prototypical implementation are documented in:
+This project originated as a computer science thesis project. The design principles,
+architecture, ECS approach, and prototypical implementation are documented in:
 
 - **[Suc25]** Suckow-Homberg, Thorsten: *helios: Design and prototypical implementation of a C++ game framework* (2025), [ResearchGate](https://www.researchgate.net/publication/397445662_helios_Design_and_prototypical_implementation_of_a_C_game_framework)
-
-## Community
-
-▸ [GitHub Discussions](https://github.com/thorstensuckow/helios/discussions) - Ask questions, share ideas<br />
-▸ [Issues](https://github.com/thorstensuckow/helios/issues) - Report bugs or request features<br />
-▸ Contact: [thorsten@suckow-homberg.de](mailto:thorsten@suckow-homberg.de)
+- **[Suc25b]** Suckow-Homberg, Thorsten: *helios: Explorative Entwicklung einer ECS-basierten Game Engine* (2025), [ResearchGate](https://www.researchgate.net/publication/403758780_helios_Explorative_Entwicklung_einer_ECS-basierten_Game_Engine)
 
 ## License
 
-helios is licensed under the **MIT License**. See the [LICENSE](https://github.com/thorstensuckow/helios/blob/main/LICENSE) file for details.
-
+The helios modules are released under the MIT License. See the license file in the
+corresponding module repository, for example [helios-engine/LICENSE](https://github.com/thorstensuckow/helios-engine/blob/main/LICENSE).

@@ -1,10 +1,10 @@
 import React from 'react';
 import styles from './styles.module.css';
 
-export default function QuickInstall(): JSX.Element {
+export default function QuickInstall(): React.JSX.Element {
   const copyToClipboard = () => {
-    const code = `git clone https://github.com/thorstensuckow/helios.git
-cd helios
+    const code = `git clone https://github.com/thorstensuckow/helios-engine.git
+cd helios-engine
 cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
 cmake --build build --config Release
 cd build
@@ -28,8 +28,8 @@ ctest -C Release --output-on-failure`;
               <pre>
                 <code>
                   <span className={styles.comment}># Clone the repository</span>
-                  {'\n'}git clone https://github.com/thorstensuckow/helios.git
-                  {'\n'}cd helios
+                  {'\n'}git clone https://github.com/thorstensuckow/helios-engine.git
+                  {'\n'}cd helios-engine
                   {'\n\n'}
                   <span className={styles.comment}># Configure with CMake</span>
                   {'\n'}cmake -S . -B build -DCMAKE_BUILD_TYPE=Release

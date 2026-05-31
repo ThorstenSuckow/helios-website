@@ -2,190 +2,173 @@
 sidebar_position: 2
 ---
 
-# Installation
+# Getting Started
 
-This guide will help you set up helios and run your first example.
+This guide explains how to work with the current split-repository version of helios.
+The website documentation is generated from the root `README.md` files of the
+module repositories.
 
 ## Prerequisites
 
-> [!IMPORTANT] 
-> Before you begin, ensure your system meets all requirements listed in the [Prerequisites](./prerequisites.md) guide. This includes:
->
-> - **C++23 compatible compiler** (MSVC 2022, GCC 13+, Clang 17+)
-> - **CMake 4.0+**
-> - **OpenGL 4.5+** support
-> - **Git** (optional for cloning)
->
-> For detailed installation instructions for your platform, see [Prerequisites](./prerequisites.md).
+Before building a module, check the module's README in the [Module Overview](/docs/modules).
+The typical baseline is:
 
-## Installation
+- **C++23 compatible compiler**
+- **CMake 4.0+**
+- **Git** for cloning repositories
+- **OpenGL/GLFW development environment** when building rendering/platform modules
 
-### 1. Clone the Repository
+Module-specific dependencies are documented on the generated module pages.
 
-```bash
-git clone https://github.com/thorstensuckow/helios.git
-cd helios
+## Repository layout
+
+For local development, keep the repositories as siblings. This mirrors the layout
+used by the website build workflow:
+
+```text
+workspace/
+  helios-engine/
+  helios-ecs/
+  helios-math/
+  helios-opengl/
+  helios-glfw/
+  helios-website/
 ```
 
-### 2. Configure the Build
-
-#### Windows (Visual Studio)
-
-```powershell
-cmake -S . -B build -G "Visual Studio 17 2022" -A x64
-```
-
-#### Linux / macOS
+Clone the modules you need:
 
 ```bash
+mkdir helios-workspace
+cd helios-workspace
+
+git clone https://github.com/thorstensuckow/helios-engine.git
+git clone https://github.com/thorstensuckow/helios-ecs.git
+git clone https://github.com/thorstensuckow/helios-math.git
+git clone https://github.com/thorstensuckow/helios-opengl.git
+git clone https://github.com/thorstensuckow/helios-glfw.git
+```
+
+## Build a module
+
+Start with the module you want to use. For the engine module:
+
+```bash
+cd helios-engine
 cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
-```
-
-### 3. Build the Project
-
-#### Windows
-
-```powershell
-cmake --build build --config Release
-```
-
-#### Linux / macOS
-
-```bash
 cmake --build build
 ```
 
-### 4. Run Tests (Optional)
-
-```bash
-cd build
-ctest -C Release --output-on-failure
-```
-
-## Running Tests
-
-helios includes a comprehensive test suite to verify functionality. Tests are built automatically when you build the project.
-
-### Running All Tests
-
-#### Windows (Visual Studio)
+On Windows with Visual Studio:
 
 ```powershell
-cd build
-ctest -C Release --output-on-failure
+cd helios-engine
+cmake -S . -B build -G "Visual Studio 17 2022" -A x64
+cmake --build build --config Release
 ```
 
-#### Linux / macOS
+The backend/platform repositories can be built the same way from their own
+repository roots:
 
 ```bash
-cd build
-ctest --output-on-failure
+cd ../helios-opengl
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+cmake --build build
+
+cd ../helios-glfw
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+cmake --build build
 ```
 
-### Running Specific Tests
+## Use installed packages
+
+Several modules expose CMake package targets. A typical consumer links the module
+it needs directly:
+
+```cmake
+find_package(helios-engine CONFIG REQUIRED)
+target_link_libraries(your_target PRIVATE helios::engine)
+```
+
+Rendering/platform integrations use their own package targets:
+
+```cmake
+find_package(helios-opengl CONFIG REQUIRED)
+find_package(helios-glfw CONFIG REQUIRED)
+
+target_link_libraries(your_target PRIVATE
+  helios::opengl
+  helios::glfw
+)
+```
+
+See each module page for exact package flags and build/install commands:
+
+- [helios::ecs](/docs/modules/helios-ecs)
+- [helios::engine](/docs/modules/helios-engine)
+- [helios::math](/docs/modules/helios-math)
+- [helios::opengl](/docs/modules/helios-opengl)
+- [helios::glfw](/docs/modules/helios-glfw)
+
+## Build the website locally
+
+The website reads module documentation from the local sibling repositories listed
+above. From `helios-website`:
 
 ```bash
-# Run tests matching a pattern
-ctest -R "Math" --output-on-failure
-
-# Run a specific test
-ctest -R "Vector3Test" --output-on-failure
-
-# List all available tests
-ctest -N
+npm ci
+npm run sync:docs
+npm run dev
 ```
 
-### Test Output
+`npm run dev` runs the local README sync first and then starts the Docusaurus dev
+server. The generated files under `helios-website/docs/modules/*.md` should not be
+edited directly.
 
-- **`--output-on-failure`**: Shows detailed output only for failed tests
-- **`-V` or `--verbose`**: Shows all test output (useful for debugging)
-- **`--rerun-failed`**: Re-runs only tests that failed in the previous run
+## Running tests
 
-### Example Test Session
+Tests are module-specific. Build the target module and run CTest from that module's
+build directory:
 
 ```bash
-$ cd build
-$ ctest -C Release --output-on-failure
-Test project F:/thorstensuckow/helios/build
-    Start 1: Vector3Test
-1/5 Test #1: Vector3Test ......................   Passed    0.02 sec
-    Start 2: Matrix4Test
-2/5 Test #2: Matrix4Test ......................   Passed    0.03 sec
-    Start 3: TransformTest
-3/5 Test #3: TransformTest ....................   Passed    0.01 sec
-    Start 4: SceneGraphTest
-4/5 Test #4: SceneGraphTest ...................   Passed    0.04 sec
-    Start 5: RenderingTest
-5/5 Test #5: RenderingTest ....................   Passed    0.05 sec
-
-100% tests passed, 0 tests failed out of 5
-
-Total Test time (real) =   0.16 sec
+cmake --build build
+ctest --test-dir build --output-on-failure
 ```
 
-### Debugging Failed Tests
+For Visual Studio builds, pass the configuration:
 
-If a test fails, use verbose mode to see detailed output:
-
-```bash
-ctest -R "FailedTestName" -V
+```powershell
+ctest --test-dir build -C Release --output-on-failure
 ```
-
-Or run the test executable directly:
-
-```bash
-# Windows
-./tests/helios/math/Debug/Vector3Test.exe
-
-# Linux/macOS
-./tests/helios/math/Vector3Test
-```
-
-## Running Your First Example
-
-After building, navigate to the example directory:
-
-```bash
-cd build/examples/simple_cube_rendering/Release
-./simple_cube_rendering
-```
-
-You should see a window with a rotating yellow wireframe cube. Press `ESC` to exit.
 
 ## Next Steps
 
-- **[Simple Cube Tutorial](./examples/simple-cube)** - Learn how the cube example works
-- **[Core Concepts](./core-concepts/scene-graph)** - Understand helios architecture
-- **[API Reference](./api/overview)** - Explore the full API
+- **[Module Overview](/docs/modules)** - Understand the modular repository structure and dependency graph
+- **[helios::ecs](/docs/modules/helios-ecs)** - Start with typed entity domains and component storage
+- **[helios::engine](/docs/modules/helios-engine)** - Explore runtime, world orchestration, commands, events, and state
+- **[Project Status](/docs/status)** - Open the current repository links
 
 ## Troubleshooting
 
-### Compilation Errors
+### CMake version too old
 
-**CMake version too old:**
-```
-Ensure you have CMake 4.0 or higher installed.
-```
+Use CMake 4.0 or newer for the module builds.
 
-**C++23 not supported:**
-```
-Update your compiler to the minimum required version.
-```
+### C++23 modules are not supported by your compiler
 
-### Runtime Errors
+Update to a compiler/toolchain with C++23 module support. Compiler support varies
+by platform and CMake generator.
 
-**Shader files not found:**
-```
-Make sure you run the example from the build directory where resources are copied.
-```
+### Module repositories are not found locally
 
-**OpenGL context errors:**
-```
-Ensure your GPU drivers are up to date and support OpenGL 4.5+.
-```
+Ensure the repositories are checked out as siblings of `helios-website` when using
+`npm run sync:docs` or `npm run dev`.
+
+### OpenGL or GLFW setup fails
+
+Check the `helios-opengl` and `helios-glfw` module pages for backend/platform
+requirements and dependency notes.
 
 ## Getting Help
 
-▸ [GitHub Discussions](https://github.com/thorstensuckow/helios/discussions)<br />
-> [Report an Issue](https://github.com/thorstensuckow/helios/issues)
-
+- [helios-engine discussions](https://github.com/thorstensuckow/helios-engine/discussions)
+- [helios-engine issues](https://github.com/thorstensuckow/helios-engine/issues)

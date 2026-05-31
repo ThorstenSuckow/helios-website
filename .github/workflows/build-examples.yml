@@ -1,0 +1,82 @@
+name: Build website artifact
+
+on:
+  push:
+    tags:
+      - 'v*'
+  release:
+    types: [created, published]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build website artifact
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout website
+        uses: actions/checkout@v4
+        with:
+          path: helios-website
+
+      - name: Checkout helios-ecs
+        uses: actions/checkout@v4
+        with:
+          repository: thorstensuckow/helios-ecs
+          path: helios-ecs
+          ref: main
+
+      - name: Checkout helios-engine
+        uses: actions/checkout@v4
+        with:
+          repository: thorstensuckow/helios-engine
+          path: helios-engine
+          ref: main
+
+      - name: Checkout helios-math
+        uses: actions/checkout@v4
+        with:
+          repository: thorstensuckow/helios-math
+          path: helios-math
+          ref: main
+
+      - name: Checkout helios-opengl
+        uses: actions/checkout@v4
+        with:
+          repository: thorstensuckow/helios-opengl
+          path: helios-opengl
+          ref: main
+
+      - name: Checkout helios-glfw
+        uses: actions/checkout@v4
+        with:
+          repository: thorstensuckow/helios-glfw
+          path: helios-glfw
+          ref: main
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+          cache: npm
+          cache-dependency-path: helios-website/package-lock.json
+
+      - name: Install dependencies
+        working-directory: ./helios-website
+        run: npm ci
+
+      - name: Build website
+        working-directory: ./helios-website
+        run: npm run build
+        env:
+          NODE_OPTIONS: --max-old-space-size=6144
+
+      - name: Upload website build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: helios-website-build-${{ github.ref_name }}
+          path: helios-website/build
+          retention-days: 30

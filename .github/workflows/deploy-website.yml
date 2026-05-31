@@ -1,0 +1,105 @@
+name: Deploy website
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build website
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout website
+        uses: actions/checkout@v4
+        with:
+          path: helios-website
+
+      - name: Checkout helios-ecs
+        uses: actions/checkout@v4
+        with:
+          repository: thorstensuckow/helios-ecs
+          path: helios-ecs
+          ref: main
+
+      - name: Checkout helios-engine
+        uses: actions/checkout@v4
+        with:
+          repository: thorstensuckow/helios-engine
+          path: helios-engine
+          ref: main
+
+      - name: Checkout helios-math
+        uses: actions/checkout@v4
+        with:
+          repository: thorstensuckow/helios-math
+          path: helios-math
+          ref: main
+
+      - name: Checkout helios-opengl
+        uses: actions/checkout@v4
+        with:
+          repository: thorstensuckow/helios-opengl
+          path: helios-opengl
+          ref: main
+
+      - name: Checkout helios-glfw
+        uses: actions/checkout@v4
+        with:
+          repository: thorstensuckow/helios-glfw
+          path: helios-glfw
+          ref: main
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+          cache: npm
+          cache-dependency-path: helios-website/package-lock.json
+
+      - name: Install Doxygen tooling
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y doxygen graphviz
+
+      - name: Install dependencies
+        working-directory: ./helios-website
+        run: npm ci
+
+      - name: Build website
+        working-directory: ./helios-website
+        run: npm run build
+        env:
+          NODE_OPTIONS: --max-old-space-size=6144
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./helios-website/build
+
+  deploy:
+    name: Deploy to GitHub Pages
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

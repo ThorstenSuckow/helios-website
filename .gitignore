@@ -10,24 +10,13 @@ build/
 doxygen/
 
 # Auto-synced from repository root (managed by scripts/sync-changelog.mjs)
-docs/changelog.md
-docs/contributing/styleguide.md
-docs/contributing/doxygen-style.md
-docs/contributing/commits.md
-docs/contributing/changelog-guide.md
-/docs/contributing/changelog-guide.md
-/docs/contributing/doxygen-style.md
-/docs/contributing/styleguide.md
-/docs/examples/gamepad-input.md
-/docs/examples/overview.md
-/docs/examples/spaceship-control.md
-/docs/examples/spaceship-shooting.md
-/docs/examples/simple-cube.md
-/docs/changelog.md
-/docs/testing.md
-/docs/helios/
+
 /docusaurus-config-navbar-doxygen-helios.json
 /sidebar-category-doxygen-helios.json
+/docusaurus-config-navbar-doxygen-helios-*.json
+/sidebar-category-doxygen-helios-*.json
+/docs/api/helios-*/
+/static/img/doxygen/
 
 # Misc
 .DS_Store
@@ -40,30 +29,10 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-/docs/contributing/issue-submission.md
-/docs/prerequisites.md
-/docs/core-concepts/conventions.md
-/docs/core-concepts/command-system.md
-/docs/core-concepts/resource-registry.md
-/docs/core-concepts/event-system.md
-/docs/core-concepts/component-system.md
-/docs/core-concepts/gameloop-architecture.md
-/docs/core-concepts/scene-graph.md
-/docs/core-concepts/spawn-system.md
-/docs/core-concepts/gameobject-builder.md
-/docs/core-concepts/text-rendering.md
-/docs/core-concepts/sparse-set.md
-/docs/examples/collision-detection.md
-/docs/examples/enemy-spawn.md
-/docs/examples/render-text-demo.md
-/docs/core-concepts/ecs/component-ops.md
-/docs/core-concepts/ecs/component-structure.md
-/docs/core-concepts/ecs/entity-handle.md
-/docs/core-concepts/ecs/entity-manager.md
-/docs/core-concepts/ecs/entity-registry.md
-/docs/core-concepts/ecs/gameobject.md
-/docs/core-concepts/ecs/overview.md
-/docs/core-concepts/ecs/system.md
-/docs/core-concepts/ecs/traits.md
-/docs/core-concepts/ecs/view.md
 
+
+/docs/modules/helios-ecs.md
+/docs/modules/helios-engine.md
+/docs/modules/helios-glfw.md
+/docs/modules/helios-math.md
+/docs/modules/helios-opengl.md

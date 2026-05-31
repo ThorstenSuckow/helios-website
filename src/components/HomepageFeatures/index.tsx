@@ -1,75 +1,75 @@
 import type {ReactNode} from 'react';
 import clsx from 'clsx';
 import Heading from '@theme/Heading';
+import Link from '@docusaurus/Link';
 import styles from './styles.module.css';
 
 type FeatureItem = {
   title: string;
+  docLink: string;
   description: ReactNode;
 };
 
 const FeatureList: FeatureItem[] = [
   {
-    title: '▸ Modern C++23',
+    title: 'helios::ecs',
+    docLink: '/docs/modules/helios-ecs',
     description: (
       <>
-        Built with C++23 modules for clean dependency management and fast compile times.
-        Leverages the latest language features for type-safe, performant code.
+        Generic ECS primitives for handles, sparse-set storage, lifecycle hooks,
+        and typed entity/component queries.
       </>
     ),
   },
   {
-    title: '▸ Flexible Rendering',
+    title: 'helios::engine',
+    docLink: '/docs/modules/helios-engine',
     description: (
       <>
-        Modular rendering pipeline with support for multiple backends. Ships with OpenGL 4.5+,
-        extensible to Vulkan, DirectX, or custom renderers.
+        Runtime foundation and integration layer for the modular helios stack,
+        including package-based CMake consumption.
       </>
     ),
   },
   {
-    title: '▸ Scene Graph',
+    title: 'helios::math',
+    docLink: '/docs/modules/helios-math',
     description: (
       <>
-        Hierarchical scene management with automatic transform propagation.
-        Supports frustum culling and efficient batch rendering.
+        Core math library for vectors, matrices, transforms, and projection-related
+        operations used across modules.
       </>
     ),
   },
   {
-    title: '▸ Unified Input',
+    title: 'helios::opengl',
+    docLink: '/docs/modules/helios-opengl',
     description: (
       <>
-        Cross-platform input handling for keyboard, mouse, and gamepad.
-        Consistent API across Windows, Linux, and macOS.
+        OpenGL rendering backend module for graphics pipeline integration in the
+        current helios architecture.
       </>
     ),
   },
   {
-    title: '▸ Math Library',
+    title: 'helios::glfw',
+    docLink: '/docs/modules/helios-glfw',
     description: (
       <>
-        Complete 3D math library with vectors, matrices, and transforms.
-        Foundation for all geometric operations in the engine.
-      </>
-    ),
-  },
-  {
-    title: '▸ Educational',
-    description: (
-      <>
-        Built from first principles as an educational project. Every component is
-        documented with clear explanations of design decisions.
+        GLFW-based platform backend for window and event integration, aligned with
+        the modular repository setup.
       </>
     ),
   },
 ];
 
-function Feature({title, description}: FeatureItem) {
+function Feature({title, docLink, description}: FeatureItem) {
   return (
     <div className={clsx('col col--4')}>
       <div className="text--center padding-horiz--md">
-        <Heading as="h3">{title}</Heading>
+        <Heading as="h3">
+          <Link to={docLink}>{title}</Link>
+        </Heading>
         <p>{description}</p>
       </div>
     </div>

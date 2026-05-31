@@ -15,10 +15,7 @@ This guide provides an overview of the contribution process and links to detaile
 ## Quick Links
 
 - **[Contributing Guide](./guide.md)** – Complete guide for getting started, commit conventions, pull requests, and testing
-- **[Issue Submission Guide](/docs/contributing/issue-submission)** – Guidelines for bug reports, feature requests, and refactoring proposals
-- **[Code Style](./styleguide.md)** – C++23 modules, naming conventions, formatting, and logging
-- **[Doxygen Style](./doxygen-style.md)** – API documentation guidelines
-- **[Changelog Guide](./changelog-guide.md)** – How to maintain the CHANGELOG
+- **[Issue Tracker](https://github.com/thorstensuckow/helios/issues)** – Guidelines and templates for reports and proposals
 
 ## Getting Started
 
@@ -55,7 +52,7 @@ ctest -C Debug --output-on-failure
 
 1. **Choose an issue** or create a new one describing your proposed change
 2. **Fork the repository** and create a feature branch
-3. **Make your changes** following the [code style guide](./styleguide.md)
+3. **Make your changes** following the conventions in the [Contributing Guide](./guide.md)
 4. **Write tests** for your changes
 5. **Update documentation** if you modify public APIs
 6. **Commit** using [conventional commit format](./guide.md#commit-conventions)
