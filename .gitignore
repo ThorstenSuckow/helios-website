@@ -34,5 +34,6 @@ yarn-error.log*
 /docs/modules/helios-ecs.md
 /docs/modules/helios-engine.md
 /docs/modules/helios-glfw.md
+/docs/modules/helios-imgui.md
 /docs/modules/helios-math.md
 /docs/modules/helios-opengl.md

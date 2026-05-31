@@ -21,6 +21,7 @@ namespaces, classes, concepts, files, and generated source-level relationships.
 | [helios::math](./helios-math/index.md) | Vector, matrix, transform, projection, and math utility APIs |
 | [helios::opengl](./helios-opengl/index.md) | OpenGL backend integration, shader compilation, render resources, and OpenGL-specific components |
 | [helios::glfw](./helios-glfw/index.md) | GLFW platform/window integration, platform manager, components, systems, and types |
+| [helios::imgui](./helios-imgui/index.md) | Dear ImGui backend, overlay orchestration, log sink, and diagnostics widgets |
 
 ## Generation model
 
@@ -32,7 +33,8 @@ helios-ecs/src      ┐
 helios-engine/src   │
 helios-math/src     ├─ Doxygen XML ─ doxygen2docusaurus ─ docs/api/<module>
 helios-opengl/src   │
-helios-glfw/src    ┘
+helios-glfw/src     │
+helios-imgui/src    ┘
 ```
 
 Generated files are not intended to be edited manually. Update the module source

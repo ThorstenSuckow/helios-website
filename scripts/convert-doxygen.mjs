@@ -35,6 +35,12 @@ const MODULES = [
     title: 'helios::glfw API Reference',
     sourceDirs: ['src'],
   },
+  {
+    id: 'helios-imgui',
+    projectName: 'helios::imgui',
+    title: 'helios::imgui API Reference',
+    sourceDirs: ['src'],
+  },
 ];
 
 function quoteDoxygenPath(value) {

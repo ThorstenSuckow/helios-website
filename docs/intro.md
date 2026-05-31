@@ -13,11 +13,12 @@ as focused modules with clear responsibilities and explicit dependencies.
 
 The current documentation is organized around these repositories:
 
-- **[helios::ecs](/docs/modules/helios-ecs)** - Generic ECS primitives and typed entity domains
-- **[helios::engine](/docs/modules/helios-engine)** - Runtime, world orchestration, rendering abstractions, state, and platform contracts
-- **[helios::math](/docs/modules/helios-math)** - Vector, matrix, transform, and projection helpers
-- **[helios::opengl](/docs/modules/helios-opengl)** - OpenGL backend integration
-- **[helios::glfw](/docs/modules/helios-glfw)** - GLFW platform/window integration
+- **[helios::ecs](./modules/helios-ecs.md)** - Generic ECS primitives and typed entity domains
+- **[helios::engine](./modules/helios-engine.md)** - Runtime, world orchestration, rendering abstractions, state, and platform contracts
+- **[helios::math](./modules/helios-math.md)** - Vector, matrix, transform, and projection helpers
+- **[helios::opengl](./modules/helios-opengl.md)** - OpenGL backend integration
+- **[helios::glfw](./modules/helios-glfw.md)** - GLFW platform/window integration
+- **[helios::imgui](./modules/helios-imgui.md)** - Dear ImGui debug overlays and developer tools
 
 ## Quick Start
 
@@ -43,6 +44,7 @@ workspace/
   helios-math/
   helios-opengl/
   helios-glfw/
+  helios-imgui/
   helios-website/
 ```
 
@@ -54,14 +56,15 @@ workspace/
 - **Runtime Architecture**: Game loop, command buffers, event buses, state management, and resource registries
 - **Rendering Integration**: Engine rendering abstractions with OpenGL backend support
 - **Platform Integration**: GLFW-backed window and platform lifecycle handling
+- **Developer UI**: Dear ImGui overlays, diagnostic widgets, and log forwarding
 - **Documentation from READMEs**: Module pages are generated from each repository's root `README.md`
 
 ## Learning Path
 
-1. **[Module Overview](/docs/modules)** - Understand the repository split and dependency graph
+1. **[Module Overview](./modules/overview.md)** - Understand the repository split and dependency graph
 2. **[Getting Started](./getting-started)** - Clone/build the current module repositories
-3. **[helios::ecs](/docs/modules/helios-ecs)** - Learn the typed-domain ECS foundation
-4. **[helios::engine](/docs/modules/helios-engine)** - Explore the runtime and engine integration layer
+3. **[helios::ecs](./modules/helios-ecs.md)** - Learn the typed-domain ECS foundation
+4. **[helios::engine](./modules/helios-engine.md)** - Explore the runtime and engine integration layer
 
 ## Project Philosophy
 

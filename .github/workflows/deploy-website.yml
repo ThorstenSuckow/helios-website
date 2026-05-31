@@ -62,6 +62,13 @@ jobs:
           path: helios-glfw
           ref: main
 
+      - name: Checkout helios-imgui
+        uses: actions/checkout@v4
+        with:
+          repository: thorstensuckow/helios-imgui
+          path: helios-imgui
+          ref: main
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:

@@ -9,7 +9,7 @@ This directory contains build-time scripts for the helios Docusaurus website.
 Generates module-wise API documentation from the sibling helios repositories.
 
 **Purpose:**
-- Runs Doxygen once per module repository (`helios-ecs`, `helios-engine`, `helios-math`, `helios-opengl`, `helios-glfw`)
+- Runs Doxygen once per module repository (`helios-ecs`, `helios-engine`, `helios-math`, `helios-opengl`, `helios-glfw`, `helios-imgui`)
 - Uses the shared website `Doxyfile` as the common base configuration
 - Writes Doxygen XML to `doxygen/<module>/xml`
 - Converts each module XML tree with `doxygen2docusaurus --id <module>`
@@ -49,6 +49,7 @@ root `README.md` of each module repository.
 | `../helios-math/README.md` | `docs/modules/helios-math.md` |
 | `../helios-opengl/README.md` | `docs/modules/helios-opengl.md` |
 | `../helios-glfw/README.md` | `docs/modules/helios-glfw.md` |
+| `../helios-imgui/README.md` | `docs/modules/helios-imgui.md` |
 
 **Usage:**
 

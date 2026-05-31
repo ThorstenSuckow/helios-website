@@ -53,5 +53,16 @@
     "sidebarCategoryLabel": "helios::glfw API",
     "navbarFilePath": "",
     "mainPageTitle": "helios::glfw API Reference"
+  },
+  "helios-imgui": {
+    "doxygenXmlInputFolderPath": "doxygen/helios-imgui/xml",
+    "docsFolderPath": "docs",
+    "apiFolderPath": "api/helios-imgui",
+    "apiBaseUrl": "api/helios-imgui",
+    "imagesFolderPath": "img/doxygen/helios-imgui",
+    "sidebarCategoryFilePath": "sidebar-category-doxygen-helios-imgui.json",
+    "sidebarCategoryLabel": "helios::imgui API",
+    "navbarFilePath": "",
+    "mainPageTitle": "helios::imgui API Reference"
   }
 }

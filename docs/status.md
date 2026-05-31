@@ -12,3 +12,4 @@ For the current state, use the repository pages directly:
 - [helios-math](https://github.com/thorstensuckow/helios-math)
 - [helios-opengl](https://github.com/thorstensuckow/helios-opengl)
 - [helios-glfw](https://github.com/thorstensuckow/helios-glfw)
+- [helios-imgui](https://github.com/thorstensuckow/helios-imgui)

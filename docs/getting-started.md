@@ -10,13 +10,14 @@ module repositories.
 
 ## Prerequisites
 
-Before building a module, check the module's README in the [Module Overview](/docs/modules).
+Before building a module, check the module's README in the [Module Overview](./modules/overview.md).
 The typical baseline is:
 
 - **C++23 compatible compiler**
 - **CMake 4.0+**
 - **Git** for cloning repositories
 - **OpenGL/GLFW development environment** when building rendering/platform modules
+- **Dear ImGui/OpenGL backend prerequisites** when building developer UI modules
 
 Module-specific dependencies are documented on the generated module pages.
 
@@ -32,6 +33,7 @@ workspace/
   helios-math/
   helios-opengl/
   helios-glfw/
+  helios-imgui/
   helios-website/
 ```
 
@@ -46,6 +48,7 @@ git clone https://github.com/thorstensuckow/helios-ecs.git
 git clone https://github.com/thorstensuckow/helios-math.git
 git clone https://github.com/thorstensuckow/helios-opengl.git
 git clone https://github.com/thorstensuckow/helios-glfw.git
+git clone https://github.com/thorstensuckow/helios-imgui.git
 ```
 
 ## Build a module
@@ -77,6 +80,10 @@ cmake --build build
 cd ../helios-glfw
 cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
 cmake --build build
+
+cd ../helios-imgui
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+cmake --build build
 ```
 
 ## Use installed packages
@@ -94,20 +101,23 @@ Rendering/platform integrations use their own package targets:
 ```cmake
 find_package(helios-opengl CONFIG REQUIRED)
 find_package(helios-glfw CONFIG REQUIRED)
+find_package(helios-imgui CONFIG REQUIRED)
 
 target_link_libraries(your_target PRIVATE
   helios::opengl
   helios::glfw
+  helios::imgui
 )
 ```
 
 See each module page for exact package flags and build/install commands:
 
-- [helios::ecs](/docs/modules/helios-ecs)
-- [helios::engine](/docs/modules/helios-engine)
-- [helios::math](/docs/modules/helios-math)
-- [helios::opengl](/docs/modules/helios-opengl)
-- [helios::glfw](/docs/modules/helios-glfw)
+- [helios::ecs](./modules/helios-ecs.md)
+- [helios::engine](./modules/helios-engine.md)
+- [helios::math](./modules/helios-math.md)
+- [helios::opengl](./modules/helios-opengl.md)
+- [helios::glfw](./modules/helios-glfw.md)
+- [helios::imgui](./modules/helios-imgui.md)
 
 ## Build the website locally
 
@@ -142,10 +152,10 @@ ctest --test-dir build -C Release --output-on-failure
 
 ## Next Steps
 
-- **[Module Overview](/docs/modules)** - Understand the modular repository structure and dependency graph
-- **[helios::ecs](/docs/modules/helios-ecs)** - Start with typed entity domains and component storage
-- **[helios::engine](/docs/modules/helios-engine)** - Explore runtime, world orchestration, commands, events, and state
-- **[Project Status](/docs/status)** - Open the current repository links
+- **[Module Overview](./modules/overview.md)** - Understand the modular repository structure and dependency graph
+- **[helios::ecs](./modules/helios-ecs.md)** - Start with typed entity domains and component storage
+- **[helios::engine](./modules/helios-engine.md)** - Explore runtime, world orchestration, commands, events, and state
+- **[Project Status](./status.md)** - Open the current repository links
 
 ## Troubleshooting
 
@@ -167,6 +177,11 @@ Ensure the repositories are checked out as siblings of `helios-website` when usi
 
 Check the `helios-opengl` and `helios-glfw` module pages for backend/platform
 requirements and dependency notes.
+
+### ImGui module setup fails
+
+Check the `helios-imgui` module page for its Dear ImGui, GLFW/OpenGL backend, and
+optional legacy-widget notes.
 
 ## Getting Help
 

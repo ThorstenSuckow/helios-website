@@ -11,6 +11,7 @@ const REPOSITORIES = {
   'helios-math': 'https://github.com/thorstensuckow/helios-math',
   'helios-opengl': 'https://github.com/thorstensuckow/helios-opengl',
   'helios-glfw': 'https://github.com/thorstensuckow/helios-glfw',
+  'helios-imgui': 'https://github.com/thorstensuckow/helios-imgui',
 };
 
 function buildFrontmatter(meta) {
@@ -171,6 +172,19 @@ async function main() {
         keywords: ['helios', 'glfw', 'platform', 'windowing', 'input'],
         sidebar_label: 'helios::glfw',
         sidebar_position: 6,
+      },
+    },
+    {
+      src: path.join(repoRoot, 'helios-imgui', 'README.md'),
+      dest: path.join(websiteRoot, 'docs', 'modules', 'helios-imgui.md'),
+      meta: {
+        title: 'helios::imgui',
+        description: 'Dear ImGui integration module for debug overlays and developer tools.',
+        slug: '/modules/helios-imgui',
+        tags: ['modules', 'ui', 'imgui'],
+        keywords: ['helios', 'imgui', 'dear imgui', 'debug overlay', 'developer tools'],
+        sidebar_label: 'helios::imgui',
+        sidebar_position: 7,
       },
     },
   ];

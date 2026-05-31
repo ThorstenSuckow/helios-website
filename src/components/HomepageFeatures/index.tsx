@@ -61,6 +61,16 @@ const FeatureList: FeatureItem[] = [
       </>
     ),
   },
+  {
+    title: 'helios::imgui',
+    docLink: '/docs/modules/helios-imgui',
+    description: (
+      <>
+        Dear ImGui integration for debug overlays, diagnostics widgets, and
+        developer UI on top of the GLFW/OpenGL stack.
+      </>
+    ),
+  },
 ];
 
 function Feature({title, docLink, description}: FeatureItem) {

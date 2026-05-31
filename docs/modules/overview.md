@@ -13,11 +13,12 @@ This section links to documentation synchronized from each module's root `README
 
 ## Available Modules
 
-- [helios::ecs](/docs/modules/helios-ecs): Generic ECS primitives and storage/query infrastructure
-- [helios::engine](/docs/modules/helios-engine): Core runtime and engine-level systems
-- [helios::math](/docs/modules/helios-math): Math types and operations for graphics/gameplay
-- [helios::opengl](/docs/modules/helios-opengl): OpenGL backend integration
-- [helios::glfw](/docs/modules/helios-glfw): GLFW-based platform integration
+- [helios::ecs](./helios-ecs.md): Generic ECS primitives and storage/query infrastructure
+- [helios::engine](./helios-engine.md): Core runtime and engine-level systems
+- [helios::math](./helios-math.md): Math types and operations for graphics/gameplay
+- [helios::opengl](./helios-opengl.md): OpenGL backend integration
+- [helios::glfw](./helios-glfw.md): GLFW-based platform integration
+- [helios::imgui](./helios-imgui.md): Dear ImGui overlays and developer UI tools
 
 ## Module Dependency Graph
 
@@ -27,6 +28,9 @@ flowchart LR
     MATH["helios::math"] --> ENGINE
     ENGINE --> OPENGL["helios::opengl"]
     ENGINE --> GLFW["helios::glfw"]
+    ECS --> IMGUI["helios::imgui"]
+    ENGINE --> IMGUI
+    GLFW --> IMGUI
 ```
 
 - An edge `A -> B` means: **B directly depends on A**.

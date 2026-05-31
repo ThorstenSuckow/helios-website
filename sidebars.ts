@@ -36,6 +36,7 @@ const generatedApiSidebars = [
   'sidebar-category-doxygen-helios-math.json',
   'sidebar-category-doxygen-helios-opengl.json',
   'sidebar-category-doxygen-helios-glfw.json',
+  'sidebar-category-doxygen-helios-imgui.json',
 ]
   .map((fileName) => path.join(__dirname, fileName))
   .filter((filePath) => fs.existsSync(filePath))
@@ -59,6 +60,7 @@ const sidebars: SidebarsConfig = {
         'modules/helios-math',
         'modules/helios-opengl',
         'modules/helios-glfw',
+        'modules/helios-imgui',
       ],
     },
     {
