@@ -372,7 +372,7 @@ Please follow the conventions from the [Contributing Overview](/docs/contributin
 ```cpp
 TEST(RenderQueueTest, AddsRenderCommandSuccessfully) {
     auto queue = RenderQueue();
-    auto command = std::make_unique<RenderCommand>(...);
+    auto command = std::make_unique<RenderSceneMemberCommand>(...);
     
     queue.add(std::move(command));
     
@@ -413,9 +413,9 @@ ctest -C Debug -V
 **Example:**
 ```cpp
 /**
- * @brief Adds a RenderCommand to the queue.
+ * @brief Adds a RenderSceneMemberCommand to the queue.
  *
- * Ownership of the RenderCommand is transferred to the queue.
+ * Ownership of the RenderSceneMemberCommand is transferred to the queue.
  * If the command is nullptr, it will be silently ignored and
  * an error will be logged.
  *
@@ -423,7 +423,7 @@ ctest -C Debug -V
  *
  * @warning This method is not thread-safe.
  */
-void add(std::unique_ptr<const RenderCommand> renderCommand);
+void add(std::unique_ptr<const RenderSceneMemberCommand> renderCommand);
 ```
 
 ### Updating Documentation
